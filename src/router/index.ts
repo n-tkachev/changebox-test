@@ -28,8 +28,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const destinationLanguage: string = to.params.language
-  const correctLanguage: boolean = i18n.global.availableLocales.includes(destinationLanguage)
+  const destinationLanguage: string = Array.isArray(to.params.language) ? to.params.language[0] : to.params.language;
+  const correctLanguage: boolean = i18n.global.availableLocales.includes(destinationLanguage as "en" | "ru");
 
   if (correctLanguage) {
     next()
