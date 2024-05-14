@@ -10,8 +10,9 @@ const onlanguagechange = (e: 'en' | 'ru') => {
   const routeName = route.name
 
   i18n.global.locale.value = e
-  router.push({ name: routeName, params: { language: e } })
-}
+  if (routeName) {
+    router.push({ name: routeName, params: { language: e } });
+  }}
 </script>
 
 <template>

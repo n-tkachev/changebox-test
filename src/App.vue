@@ -11,14 +11,14 @@ const route = useRoute()
 
 watch(() => route, (val) => {
   try {
-    const currentRouteLocale: string = val.params.language
-    const availableLocales: ('en' | 'ru')[] = i18n.global.availableLocales
+    const currentRouteLocale: string = Array.isArray(val.params.language) ? val.params.language[0] : val.params.language;
+    const availableLocales: ('en' | 'ru')[] = i18n.global.availableLocales;
 
-    if (availableLocales.includes(currentRouteLocale)) {
-      i18n.global.locale.value = currentRouteLocale
+    if (availableLocales.includes(currentRouteLocale as "en" | "ru")) {
+      i18n.global.locale.value = currentRouteLocale as "en" | "ru";
     }  
   } catch(e) {
-    console.error('error in route watcher: ', e)
+    console.error('error in route watcher: ', e);
   }
 }, { deep: true })
 </script>
