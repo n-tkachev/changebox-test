@@ -71,6 +71,8 @@ export const useCardsStore = defineStore('cards', () => {
   }
 
   const deleteCard = (id: number): Promise<void> => {
+    debugger
+
     if (!db.value) {
       throw new Error('Database is not opened')
     }

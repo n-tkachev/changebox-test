@@ -1,5 +1,7 @@
 <script setup lang="ts">
-  import CreateCardForm from './CreateCardForm.vue'
+import CardEditor from './CardEditor.vue';
+
+  // import CreateCardForm from './CreateCardForm.vue'
 
   const props = defineProps<{
     id?: number | null;
@@ -12,13 +14,16 @@
       <div class="dialog__header">
         <i class="material-icons" @click="$emit('close')">close</i>
       </div>
-      <CreateCardForm :id="props.id" editable @close="$emit('close')" />
+      <div class="dialog__form-wrapper">
+        <CardEditor editable :id="props.id" @close="$emit('close')" />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .dialog {
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,6 +41,9 @@
     display: flex;
     flex-direction: row;
     justify-content: end;
+  }
+  &__form-wrapper {
+    background: black;
   }
 }
 </style>

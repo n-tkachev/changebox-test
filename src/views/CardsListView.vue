@@ -3,7 +3,13 @@ import { ref } from 'vue'
 import { useCardsStore } from '@/stores/cards'
 import { onMounted } from 'vue'
 import DialogEditCard from '@/components/DialogEditCard.vue'
-import CardItem from '@/components/CardItem.vue'
+import DynamicCardItem from '@/components/DynamicCardItem.vue'
+import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const toast = useToast()
 
 const cardsStore = useCardsStore()
 
@@ -15,10 +21,26 @@ onMounted(async () => {
   await cardsStore.getAllCards()
 })
 
-const onEdit = (e: number) => {
-  isShownEditCardDialog.value = true
-  idToEdit.value = e
+const onDelete = (e: number | undefined) => {
+  if (e !== undefined) {
+    cardsStore.deleteCard(e)
+      .then(() => {
+        return cardsStore.getAllCards()
+      })
+      .then(() => {
+        toast.success((t('message.createCard.successDeleted')))
+      })
+      .catch(err => toast.error((t('message.createCard.errorDeleted'))))
+  }
 }
+
+const onEdit = (e: number | undefined) => {
+  if (e !== undefined) {
+    isShownEditCardDialog.value = true
+    idToEdit.value = e
+  }
+}
+
 </script>
 
 <template>
@@ -28,13 +50,17 @@ const onEdit = (e: number) => {
     <h2>{{ $t("message.cardsList.header") }}</h2>
   
     <div class="cards-list">
-      <CardItem
-      v-for="[key, card] in Object.entries(cardsStore.cards)"
-      :card="card"
-      :key="key"
-      @deleted="cardsStore.getAllCards"
-      @edit="onEdit"
-    />
+      <div class="cards-list__card-wrapper" v-for="[key, card] in Object.entries(cardsStore.cards)" :key="key">
+        <div class="cards-list__card-wrapper__actions">
+          <i class="icon-edit material-icons" @click="onEdit(card.id)">edit</i>
+          <i class="icon-delete material-icons" @click="onDelete(card.id)">delete</i>
+        </div>
+        <DynamicCardItem
+          :templateModel="card.template"
+          @deleted="cardsStore.getAllCards"
+          @edit="onEdit"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -45,5 +71,33 @@ const onEdit = (e: number) => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  &__card-wrapper {
+    position: relative;
+    &__actions {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+      position: absolute;
+      padding: 1rem;
+      top: 0;
+      right: 0;
+      .icon-edit {
+        transition: color 0.2s ease-in-out;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.3);
+        &:hover {
+          color: rgba(255, 165, 0, 0.8);
+        }
+      }
+      .icon-delete {
+        transition: color 0.2s ease-in-out;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.3);
+        &:hover {
+          color: rgba(255, 0, 0, 0.8);
+        }
+      }
+    }
+  }
 }
 </style>

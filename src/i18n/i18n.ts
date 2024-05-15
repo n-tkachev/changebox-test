@@ -16,6 +16,12 @@ const i18n = createI18n({
           tabTitle: "Cards List"
         },
         createCard: {
+          successDeleted: "Card deleted",
+          errorDeleted: "Error deleting card",
+          successEdited: "Card edited",
+          errorEdited: "Error editing card",
+          successCreated: "Card created",
+          errorCreated: "Error creating card",
           tabTitle: "Create Card",
           header: "Create Card",
           title: 'Title',
@@ -37,6 +43,12 @@ const i18n = createI18n({
           tabTitle: "Галерея карточек"
         },
         createCard: {
+          successDeleted: "Карточка успешно удалена",
+          errorDeleted: "Ошибка при удалении карточки",
+          successEdited: "Карточка успешно отредактирована",
+          errorEdited: "Ошибка редактирования карточки",
+          successCreated: "Карточка создана",
+          errorCreated: "Ошибка при создании карточки",
           header: "Создать карточку",
           tabTitle: "Создать карточку",
           title: 'Название',
