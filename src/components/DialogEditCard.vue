@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import CardEditor from './CardEditor.vue';
-
-  // import CreateCardForm from './CreateCardForm.vue'
-
   const props = defineProps<{
     id?: number | null;
   }>()
